@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "458858892390",
+    "project_id": "taskeameproject-fc2ce",
+    "storage_bucket": "taskeameproject-fc2ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458858892390:android:e4fde0ac1e74d064a831a7",
+        "android_client_info": {
+          "package_name": "com.taskeameapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "458858892390-gbn48as3ir6sjj6lcuh58pdjf3t1h8tk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taskeameapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "458858892390-nf54ourh90h2kog1kpfnonvtuk8to963.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLz-eiy8cyQVPmhl0c26PbzflNl_67eak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "458858892390-nf54ourh90h2kog1kpfnonvtuk8to963.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
