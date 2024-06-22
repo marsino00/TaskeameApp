@@ -15,25 +15,25 @@ export const ProfileScreen = () => {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-    //   dispatch(logout());
-    console.log(user);
-
+      dispatch(logout());
       navigation.navigate('Login');
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-
-        <View style={{gap:10}}>
+      {user && user.user ? (
+        <View style={{ gap: 10 }}>
           <Image source={{ uri: user.user.photo }} style={{ width: 100, height: 100, borderRadius: 50 }} />
           <Text>Nombre: {user.user.name}</Text>
           <Text>Email: {user.user.email}</Text>
         </View>
-        <View>
-                <Button onPress={signOut} title="LogOut" color="red" />
-            </View>
+      ) : (<View />)}
+      <View style={{ marginTop: 20 }}>
+        <Button onPress={signOut} title="Cerrar sesión" color="red" />
+      </View>
     </SafeAreaView>
   );
 };

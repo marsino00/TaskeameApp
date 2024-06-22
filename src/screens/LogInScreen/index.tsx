@@ -21,18 +21,16 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const user = useSelector(selectUser);
-  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     GoogleSignin.configure();
   }, []);
 
   useEffect(() => {
-    // Si el usuario está logueado en Redux, navegar a TabNavigator directamente
     if (user.isLoggedIn) {
       navigation.navigate('TabNavigator');
     }
-  }, [user.isLoggedIn]);
+  }, [user.isLoggedIn,navigation]);
 
   const signIn = async () => {
     try {
@@ -41,7 +39,6 @@ const LoginScreen = () => {
       console.log('User:', user);
       dispatch(login(user));
       navigation.navigate('TabNavigator');
-      setLoggedIn(true);
     } catch (error) {
       console.log(error);
       // Manejar errores según sea necesario
@@ -60,7 +57,6 @@ const LoginScreen = () => {
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Dark}
                 onPress={signIn}
-                disabled={loggedIn}
               />
             </View>
 
