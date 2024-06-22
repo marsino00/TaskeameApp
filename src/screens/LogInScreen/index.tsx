@@ -36,16 +36,12 @@ const LoginScreen = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const { user } = await GoogleSignin.signIn();
-      console.log('User:', user);
       dispatch(login(user));
       navigation.navigate('TabNavigator');
     } catch (error) {
       console.log(error);
-      // Manejar errores según sea necesario
     }
   };
-
-
 
   return (
       <SafeAreaView>

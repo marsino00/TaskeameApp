@@ -14,6 +14,8 @@ import store from './src/store/store';
 import PublishScreen from './src/screens/PublishScreen';
 import MytasksScreen from './src/screens/MytasksScreen';
 import MessagesScreen from './src/screens/MessagesScreen';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 // import HomeScreen from './screens/HomeSreen';
 // import AuthScreen from './screens/AuthScreen';
 // import MainScreen from './screens/MainScreen';
@@ -30,8 +32,32 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabNavigator() {
+  function printIcon(route:any,focused:boolean){
+    let iconName;
+    if (route.name === 'Home') {
+      iconName = focused ? 'home' : 'home-outline';
+    } else if (route.name === 'Mensajes') {
+      iconName = focused ? 'message' : 'message-outline';
+    } else if (route.name === 'Publicar') {
+      iconName = focused ? 'publish' : 'publish';
+    } else if (route.name === 'Mis tareas') {
+      iconName = focused ? 'clipboard-check' : 'clipboard-check-outline';
+    } else if (route.name === 'Perfil') {
+      iconName = focused ? 'account-circle' : 'account-circle';
+    }
+    return iconName;
+  }
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        const iconName = printIcon(route, focused);
+        return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: 'tomato',
+      tabBarInactiveTintColor: 'gray',
+    })}
+  >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Mensajes" component={MessagesScreen} />
       <Tab.Screen name="Publicar" component={PublishScreen} />
@@ -48,14 +74,6 @@ function App() {
       <Stack.Navigator initialRouteName="Login">
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
       <Stack.Screen name="TabNavigator" component={MainTabNavigator}  options={{ headerShown: false }}  />
-      {/* <Stack.Screen name="Inicio" component={HomeScreen} />
-      <Stack.Screen name="Autenticación" component={AuthScreen} /> */}
-      {/* <Stack.Screen name="Principal" component={MainTabNavigator} /> */}
-      {/* <Stack.Screen name="Detalles de Tarea" component={TaskDetailsScreen} />
-      <Stack.Screen name="Mensajería" component={MessagingScreen} />
-      <Stack.Screen name="Gestión de Tareas" component={TaskManagementScreen} />
-      <Stack.Screen name="Perfil de Usuario" component={ProfileScreen} />
-      <Stack.Screen name="Gestión de Pagos" component={PaymentScreen} /> */}
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>
