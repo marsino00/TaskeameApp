@@ -1,86 +1,57 @@
-import React, {useEffect} from 'react';
-import {useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Button,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-} from 'react-native';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import {Header} from 'react-native/Libraries/NewAppScreen';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function App() {
-  const [state, setState] = useState('');
-  const [userInfo, setuserInfo] = useState('');
-  const [loggedIn, setloggedIn] = useState(false);
+// Importa todas tus pantallas aquí
+import {LoginScreen} from './src/screens/LoginScreen';
+import { HomeScreen } from './src/screens/HomeScreen';
+import { ProfileScreen } from './src/screens/ProfileScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import HomeScreen from './screens/HomeSreen';
+// import AuthScreen from './screens/AuthScreen';
+// import MainScreen from './screens/MainScreen';
+// import TaskPostScreen from './screens/TaskPostScreen';
+// import TaskSearchScreen from './screens/TaskSearchScreen';
+// import TaskDetailsScreen from './screens/TaskDetailsScreen';
+// import MessagingScreen from './screens/MessagingScreen';
+// import TaskManagementScreen from './screens/TaskManagementScreen';
+// import ProfileScreen from './screens/ProfileScreen';
+// import PaymentScreen from './screens/PaymentScreen';
 
-  // GoogleSignin.configure();
-  useEffect(() => {
-    GoogleSignin.configure();
-  }, []);
-  const signIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const {accessToken, idToken} = await GoogleSignin.signIn();
-      setloggedIn(true);
-    } catch (error) {
-      console.log(error);
+const Stack = createNativeStackNavigator();
+// const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
-      // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-      //   // user cancelled the login flow
-      //   alert('Cancel');
-      // } else if (error.code === statusCodes.IN_PROGRESS) {
-      //   alert('Signin in progress');
-      //   // operation (f.e. sign in) is in progress already
-      // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-      //   alert('PLAY_SERVICES_NOT_AVAILABLE');
-      //   // play services not available or outdated
-      // } else {
-      //   // some other error happened
-      // }
-    }
-  };
-  const signOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      setloggedIn(false);
-      setuserInfo([]);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+function MainTabNavigator() {
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView contentInsetAdjustmentBehavior="automatic">
-          <View>
-            <View>
-              <GoogleSigninButton
-                style={{width: 192, height: 48}}
-                size={GoogleSigninButton.Size.Wide}
-                color={GoogleSigninButton.Color.Dark}
-                onPress={signIn}
-                disabled={loggedIn}
-              />
-            </View>
-            <View>
-              {!loggedIn && <Text>You are currently logged out</Text>}
-              {loggedIn && (
-                <Button onPress={signOut} title="LogOut" color="red" />
-              )}
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      {/* <Tab.Screen name="Publicar" component={TaskPostScreen} />
+      <Tab.Screen name="Buscar" component={TaskSearchScreen} /> */}
+      <Tab.Screen name="Perfil" component={ProfileScreen} />
+    </Tab.Navigator>
   );
 }
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="TabNavigator" component={MainTabNavigator}  options={{ headerShown: false }}  />
+      {/* <Stack.Screen name="Inicio" component={HomeScreen} />
+      <Stack.Screen name="Autenticación" component={AuthScreen} /> */}
+      {/* <Stack.Screen name="Principal" component={MainTabNavigator} /> */}
+      {/* <Stack.Screen name="Detalles de Tarea" component={TaskDetailsScreen} />
+      <Stack.Screen name="Mensajería" component={MessagingScreen} />
+      <Stack.Screen name="Gestión de Tareas" component={TaskManagementScreen} />
+      <Stack.Screen name="Perfil de Usuario" component={ProfileScreen} />
+      <Stack.Screen name="Gestión de Pagos" component={PaymentScreen} /> */}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default App;
