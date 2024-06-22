@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react';
-import {useState} from 'react';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
   Button,
   SafeAreaView,
   ScrollView,
@@ -14,76 +13,60 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {Header} from 'react-native/Libraries/NewAppScreen';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, selectUser } from '../../store/slices/userSlice';
 
-export const LoginScreen = () => {
-  const [state, setState] = useState('');
-  // const [userInfo, setuserInfo] = useState('');
-  const [loggedIn, setloggedIn] = useState(false);
+const LoginScreen = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
-  // GoogleSignin.configure();
+  const user = useSelector(selectUser);
+  const [loggedIn, setLoggedIn] = useState(false);
+
   useEffect(() => {
     GoogleSignin.configure();
   }, []);
+
+  useEffect(() => {
+    // Si el usuario está logueado en Redux, navegar a TabNavigator directamente
+    if (user.isLoggedIn) {
+      navigation.navigate('TabNavigator');
+    }
+  }, [user.isLoggedIn]);
+
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const { user } = await GoogleSignin.signIn();
       console.log('User:', user);
+      dispatch(login(user));
       navigation.navigate('TabNavigator');
-      setloggedIn(true);
+      setLoggedIn(true);
     } catch (error) {
       console.log(error);
+      // Manejar errores según sea necesario
+    }
+  };
 
-      // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-      //   // user cancelled the login flow
-      //   console.log('Cancelled');
-      // } else if (error.code === statusCodes.IN_PROGRESS) {
-      //   console.log('Signin in progress');
-      //   // operation (f.e. sign in) is in progress already
-      // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-      //   console.log('PLAY_SERVICES_NOT_AVAILABLE');
-      //   // play services not available or outdated
-      // } else {
-      //   // some other error happened
-      // }
-    }
-  };
-  const signOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      setloggedIn(false);
-      // setuserInfo([]);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
+
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View>
             <View>
               <GoogleSigninButton
-                style={{width: 192, height: 48}}
+                style={{ width: 192, height: 48 }}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Dark}
                 onPress={signIn}
                 disabled={loggedIn}
               />
             </View>
-            <View>
-              {!loggedIn && <Text>You are currently logged out</Text>}
-              {loggedIn && (
-                <Button onPress={signOut} title="LogOut" color="red" />
-              )}
-            </View>
+
           </View>
         </ScrollView>
       </SafeAreaView>
-    </>
   );
 };
+export default LoginScreen;
