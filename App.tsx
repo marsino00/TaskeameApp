@@ -1,20 +1,22 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
 // import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // Importa todas tus pantallas aquí
 import LoginScreen from './src/screens/LoginScreen';
-import { HomeScreen } from './src/screens/HomeScreen';
-import { ProfileScreen } from './src/screens/ProfileScreen';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Provider } from 'react-redux';
-import store from './src/store/store';
+import {HomeScreen} from './src/screens/HomeScreen';
+import {ProfileScreen} from './src/screens/ProfileScreen';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {Provider} from 'react-redux';
+import  {persistor,store} from './src/store/store';
 import PublishScreen from './src/screens/PublishScreen';
 import MytasksScreen from './src/screens/MytasksScreen';
 import MessagesScreen from './src/screens/MessagesScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {RootStackParamList} from './src/types/navigation';
+import {PersistGate} from 'redux-persist/integration/react';
 
 // import HomeScreen from './screens/HomeSreen';
 // import AuthScreen from './screens/AuthScreen';
@@ -27,12 +29,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 // import ProfileScreen from './screens/ProfileScreen';
 // import PaymentScreen from './screens/PaymentScreen';
 
-const Stack = createNativeStackNavigator();
+// const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 // const Tab = createBottomTabNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabNavigator() {
-  function printIcon(route:any,focused:boolean){
+  function printIcon(route: any, focused: boolean) {
     let iconName;
     if (route.name === 'Home') {
       iconName = focused ? 'home' : 'home-outline';
@@ -49,15 +52,16 @@ function MainTabNavigator() {
   }
   return (
     <Tab.Navigator
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        const iconName = printIcon(route, focused);
-        return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
-      },
-      tabBarActiveTintColor: 'tomato',
-      tabBarInactiveTintColor: 'gray',
-    })}
-  >
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+          const iconName = printIcon(route, focused);
+          return (
+            <MaterialCommunityIcons name={iconName} size={size} color={color} />
+          );
+        },
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+      })}>
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Mensajes" component={MessagesScreen} />
       <Tab.Screen name="Publicar" component={PublishScreen} />
@@ -70,12 +74,22 @@ function MainTabNavigator() {
 function App() {
   return (
     <Provider store={store}>
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="TabNavigator" component={MainTabNavigator}  options={{ headerShown: false }}  />
-      </Stack.Navigator>
-    </NavigationContainer>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="TabNavigator"
+              component={MainTabNavigator}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
     </Provider>
   );
 }
