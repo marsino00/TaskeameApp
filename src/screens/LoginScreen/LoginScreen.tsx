@@ -1,17 +1,12 @@
 import React, { useEffect } from 'react';
-import { useState } from 'react';
 import {
   View,
-  Text,
-  Button,
   SafeAreaView,
   ScrollView,
-  StatusBar,
 } from 'react-native';
 import {
   GoogleSignin,
   GoogleSigninButton,
-  statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,17 +15,17 @@ import { login, selectUser } from '../../store/slices/userSlice';
 const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const user = useSelector(selectUser);
+  const userSelected = useSelector(selectUser);
 
   useEffect(() => {
     GoogleSignin.configure();
   }, []);
 
   useEffect(() => {
-    if (user.isLoggedIn) {
+    if (userSelected.isLoggedIn) {
       navigation.navigate('TabNavigator');
     }
-  }, [user.isLoggedIn,navigation]);
+  }, [userSelected.isLoggedIn,navigation]);
 
   const signIn = async () => {
     try {

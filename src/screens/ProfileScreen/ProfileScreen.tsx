@@ -6,7 +6,7 @@ import { logout, selectUser } from '../../store/slices/userSlice';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useNavigation } from '@react-navigation/native';
 
-export const ProfileScreen = () => {
+ const ProfileScreen = () => {
   const user = useSelector(selectUser);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -37,3 +37,4 @@ export const ProfileScreen = () => {
     </SafeAreaView>
   );
 };
+export default ProfileScreen;
