@@ -3,6 +3,7 @@ import {
   View,
   SafeAreaView,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {
   GoogleSignin,
@@ -23,37 +24,49 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (userSelected.isLoggedIn) {
-      navigation.navigate('TabNavigator');
+      navigation.replace('TabNavigator');
     }
-  }, [userSelected.isLoggedIn,navigation]);
+  }, [userSelected.isLoggedIn, navigation]);
 
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const { user } = await GoogleSignin.signIn();
       dispatch(login(user));
-      navigation.navigate('TabNavigator');
+      navigation.replace('TabNavigator');
     } catch (error) {
       console.log(error);
     }
   };
 
-  return (
+  // Si el usuario ya está logueado, no mostrar la pantalla de inicio de sesión
+  if (userSelected.isLoggedIn) {
+    return (
       <SafeAreaView>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
-          <View>
-            <View>
-              <GoogleSigninButton
-                style={{ width: 192, height: 48 }}
-                size={GoogleSigninButton.Size.Wide}
-                color={GoogleSigninButton.Color.Dark}
-                onPress={signIn}
-              />
-            </View>
-
-          </View>
+          <ActivityIndicator size="large" />
         </ScrollView>
       </SafeAreaView>
+    );
+  }
+
+  // Si el usuario no está logueado, mostrar el botón de inicio de sesión
+  return (
+    <SafeAreaView>
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <View>
+          <View>
+            <GoogleSigninButton
+              style={{ width: 192, height: 48 }}
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
+              onPress={signIn}
+            />
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
+
 export default LoginScreen;
