@@ -24,7 +24,7 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (userSelected.isLoggedIn) {
-      navigation.replace('TabNavigator');
+      navigation.navigate('TabNavigator');
     }
   }, [userSelected.isLoggedIn, navigation]);
 
@@ -33,7 +33,7 @@ const LoginScreen = () => {
       await GoogleSignin.hasPlayServices();
       const { user } = await GoogleSignin.signIn();
       dispatch(login(user));
-      navigation.replace('TabNavigator');
+      navigation.navigate('TabNavigator');
     } catch (error) {
       console.log(error);
     }

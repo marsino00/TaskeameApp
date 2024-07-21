@@ -27,7 +27,7 @@ export const MainTabNavigator = () => {
         iconName = focused ? 'message' : 'message-outline';
         break;
       case 'Publicar':
-        iconName = focused ? 'pencil' : 'pencil-outline';
+        iconName = focused ? 'plus-circle' : 'plus-circle-outline';
         break;
       case 'Mis tareas':
         iconName = focused ? 'clipboard-check' : 'clipboard-check-outline';
@@ -49,11 +49,12 @@ export const MainTabNavigator = () => {
         tabBarIcon: ({ focused, color, size }) => renderIcon(route.name, focused, color, size),
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
+        headerTitleAlign:'center',
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Mensajes" component={MessagesScreen} />
-      <Tab.Screen name="Publicar" component={PublishScreen} />
+      <Tab.Screen name="Publicar tarea"  component={PublishScreen} />
       <Tab.Screen name="Mis tareas" component={MytasksScreen} />
       <Tab.Screen name="Perfil" component={ProfileScreen} />
     </Tab.Navigator>

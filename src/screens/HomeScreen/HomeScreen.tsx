@@ -70,7 +70,7 @@ const HomeScreen = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredTasks, setFilteredTasks] = useState(mockTasks);
 
-  const handleSearch = (text) => {
+  const handleSearch = (text:string) => {
     const filtered = mockTasks.filter(task =>
       task.titulo.toLowerCase().includes(text.toLowerCase()) ||
       task.descripcion.toLowerCase().includes(text.toLowerCase()) ||
